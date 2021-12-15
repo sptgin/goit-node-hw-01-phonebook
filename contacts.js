@@ -26,15 +26,15 @@ const removeContact = async contactId => {
   const contacts = await readContent();
   const contactsForRemove = contacts.find(contact => contact.id == contactId);
   if (contactsForRemove) {
-    console.log('ContactForRemove +');
-    return;
+    const contactsNew = contacts.filter(
+      contact => contact !== contactsForRemove,
+    );
+    await fs.writeFile(
+      path.join(__dirname, 'db', 'contacts.json'),
+      JSON.stringify(contactsNew, null, 2),
+    );
+    return contactsForRemove;
   }
-  console.log('ContactForRemove - ');
-  // await fs.writeFile(
-  //   path.join(__dirname, 'db', 'contacts.json'),
-  //   JSON.stringify(contacts, null, 2),
-  // );
-  // return newContact;
 };
 
 const addContact = async (name, email, phone) => {
